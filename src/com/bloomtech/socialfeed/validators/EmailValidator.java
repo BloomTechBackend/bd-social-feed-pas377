@@ -3,15 +3,15 @@ package com.bloomtech.socialfeed.validators;
 import com.bloomtech.socialfeed.exceptions.EmailValidationException;
 
 public class EmailValidator implements Validator {
+    String emailPattern = "^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,}$";
+
     public EmailValidator() {
     }
 
     private boolean isValidEmail(String email) {
-        /*TODO: Validate that email begins with a letter or number, contains only letters, numbers, "." and "_", and
-        *that it follows the pattern of name@domain.identifier
-        */
-
-        return true;
+        java.util.regex.Pattern p = java.util.regex.Pattern.compile(emailPattern);
+        java.util.regex.Matcher m = p.matcher(email);
+        return m.matches();
     }
 
     @Override
@@ -22,3 +22,4 @@ public class EmailValidator implements Validator {
         }
     }
 }
+

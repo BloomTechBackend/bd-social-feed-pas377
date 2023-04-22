@@ -4,10 +4,9 @@ import com.bloomtech.socialfeed.models.User;
 import com.bloomtech.socialfeed.validators.UserInfoValidator;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Reader;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -26,7 +25,23 @@ public class UserRepository {
 
     public List<User> getAllUsers() {
         List<User> allUsers = new ArrayList<>();
-        //TODO: return parsed list of Users from UserData.json
+
+        Gson gson = new GsonBuilder()
+                .create();
+
+        try {
+            BufferedReader bufferedReader = new BufferedReader(new FileReader(USER_DATA_PATH));
+            allUsers = gson.fromJson(bufferedReader, new TypeToken<List<User>>(){}.getType());
+
+            bufferedReader.close();
+
+        } catch (IOException e) {
+            e.getStackTrace();
+        }
+
+        if (allUsers == null) {
+            return new ArrayList<>();
+        }
 
         return allUsers;
     }
@@ -50,5 +65,11 @@ public class UserRepository {
         }
         allUsers.add(user);
         //TODO: Write allUsers to UserData.json
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        try (FileWriter writer = new FileWriter(USER_DATA_PATH)) {
+            gson.toJson(allUsers, writer);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

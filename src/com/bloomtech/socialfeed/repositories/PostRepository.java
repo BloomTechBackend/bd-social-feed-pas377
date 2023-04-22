@@ -1,7 +1,14 @@
 package com.bloomtech.socialfeed.repositories;
 
+import com.bloomtech.socialfeed.helpers.LocalDateTimeAdapter;
 import com.bloomtech.socialfeed.models.Post;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,9 +35,21 @@ public class PostRepository {
         List<Post> allPosts = new ArrayList<>();
         allPosts.add(post);
 
-        //TODO: Write the new Post data to the PostData.json file
+        Gson gson = new GsonBuilder()
+                .setPrettyPrinting()
+                .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
+                .create();
 
-        //TODO: Return an updated list of all posts
+        try {
+            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(POST_DATA_PATH));
+            bufferedWriter.write(gson.toJson(allPosts));
+
+            bufferedWriter.close();
+
+        } catch (IOException e) {
+            e.getStackTrace();
+        }
+
         return allPosts;
     }
 }

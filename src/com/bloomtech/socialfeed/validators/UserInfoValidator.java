@@ -7,14 +7,57 @@ import com.bloomtech.socialfeed.models.User;
 public class UserInfoValidator implements Validator {
 
     private boolean isValidUsername(String username) {
-        //TODO: validate username begins with an uppercase letter, is at least 4 characters long, and only contains
-        //letters, numbers, and underscores
+        //Username must begin Uppercase
+        if (!Character.isUpperCase(username.charAt(0))) {
+            return false;
+        }
+        //Username is min 4 letters long
+        if (username.length() < 4) {
+            return false;
+        }
+        //contains at letters, numbers, and underscores
+        for (int i = 0; i < username.length(); i++) {
+            char c = username.charAt(i);
+            if (!Character.isLetterOrDigit(c) && c != '_') {
+                return false;
+            }
+        }
         return true;
     }
 
     private boolean isValidPassword(String password) {
-        //TODO: validate password contains at least 8 characters, an uppercase, and a lowercase letter.
-        //valid symbols include: !@#$%^&*
+        if (password.length() < 8) {
+            return false;
+        }
+
+        // Check for uppercase letter
+        java.util.regex.Pattern pattern = java.util.regex.Pattern.compile(".*[A-Z].*");
+        java.util.regex.Matcher matcher = pattern.matcher(password);
+        if (!matcher.matches()) {
+            return false;
+        }
+
+        // Check for lowercase letter
+        pattern = java.util.regex.Pattern.compile(".*[a-z].*");
+        matcher = pattern.matcher(password);
+        if (!matcher.matches()) {
+            return false;
+        }
+
+        // Check for at least one digit
+        pattern = java.util.regex.Pattern.compile(".*\\d.*");
+        matcher = pattern.matcher(password);
+        if (!matcher.matches()) {
+            return false;
+        }
+
+        // Check for valid symbols
+        pattern = java.util.regex.Pattern.compile("^[a-zA-Z0-9!@#$%^&*]+$");
+        matcher = pattern.matcher(password);
+        if (!matcher.matches()) {
+            return false;
+        }
+
         return true;
     }
 
