@@ -8,7 +8,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-//TODO: Implement Observer Pattern
 public class SourceFeed implements Source {
     private final PostRepository postRepository = new PostRepository();
 
@@ -17,6 +16,7 @@ public class SourceFeed implements Source {
 
     public SourceFeed() {
         this.posts = new ArrayList<>();
+        this.observers = new ArrayList<>();
     }
 
     public void getAllPosts() {
@@ -43,16 +43,17 @@ public class SourceFeed implements Source {
 
     @Override
     public void attach(Observer observer) {
-
+        observers.add(observer);
     }
 
     @Override
     public void detach(Observer observer) {
-
+        observers.remove(observer);
     }
 
     @Override
     public void updateAll() {
-
+        for (Observer observer : observers)
+            observer.update();
     }
 }
