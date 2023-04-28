@@ -11,20 +11,18 @@ import java.util.List;
 public class OUserFeed implements Observer {
     private User user;
     private List<Post> feed;
+    private List<Observer> observers;
+  
     private SourceFeed sourceFeed;
 
     public OUserFeed(User user) {
         this.user = user;
         this.feed = new ArrayList<>();
-        //TODO: update OUserFeed in constructor after implementing observer pattern
-    }
+        this.observers = new ArrayList<>();
 
-    public User getUser() {
-        return user;
-    }
-
-    public List<Post> getFeed() {
-        return feed;
+        this.sourceFeed = new SourceFeed();
+        App.sourceFeed.attach(this);
+        update();
     }
 
     @Override
@@ -38,6 +36,28 @@ public class OUserFeed implements Observer {
                     }
                 }
             }
+        }
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public List<Post> getFeed() {
+        return feed;
+    }
+
+    public void attach(Observer o) {
+        observers.add(o);
+    }
+
+    public void detach(Observer o) {
+        observers.remove(o);
+    }
+
+    public void updateAll() {
+        for (Observer o : observers) {
+            o.update();
         }
     }
 }

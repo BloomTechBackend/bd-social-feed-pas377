@@ -1,6 +1,6 @@
 package com.bloomtech.socialfeed.models;
 
-import com.bloomtech.socialfeed.App;
+
 import com.bloomtech.socialfeed.observerpattern.OUserFeed;
 
 import java.util.ArrayList;

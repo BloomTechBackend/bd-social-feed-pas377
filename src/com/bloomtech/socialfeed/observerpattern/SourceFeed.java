@@ -20,8 +20,22 @@ public class SourceFeed implements Source {
         this.observers = new ArrayList<>();
     }
 
+    @Override
+    public void attach(Observer o) {
+        observers.add(o);
+    }
+    @Override
+    public void detach(Observer o) {
+        observers.remove(o);
+    }
+    @Override
+    public void updateAll() {
+        for (Observer o : observers)
+            o.update();
+    }
+
     public List<Post> getAllPosts() {
-       return postRepository.getAllPosts();
+        return postRepository.getAllPosts();
     }
 
     public Post addPost(User user, String body) {
@@ -40,21 +54,5 @@ public class SourceFeed implements Source {
 
     public List<Post> getPosts() {
         return posts;
-    }
-
-    @Override
-    public void attach(Observer observer) {
-        observers.add(observer);
-    }
-
-    @Override
-    public void detach(Observer observer) {
-        observers.remove(observer);
-    }
-
-    @Override
-    public void updateAll() {
-        for (Observer observer : observers)
-            observer.update();
     }
 }
