@@ -11,6 +11,7 @@ import java.util.List;
 public class OUserFeed implements Observer {
     private User user;
     private List<Post> feed;
+    private SourceFeed sourceFeed;
 
     public OUserFeed(User user) {
         this.user = user;
@@ -28,15 +29,15 @@ public class OUserFeed implements Observer {
 
     @Override
     public void update() {
-//        List<Post> posts = sourceFeed.getAllPosts();
-//        if (user != null) {
-//            for (String username : user.getFollowing()) {
-//                for (Post post : posts) {
-//                    if (post.getUsername().equals(username)) {
-//                        feed.add(post);
-//                    }
-//                }
-//            }
-//        }
+        List<Post> posts = sourceFeed.getAllPosts();
+        if (user != null) {
+            for (String username : user.getFollowing()) {
+                for (Post post : posts) {
+                    if (post.getUsername().equals(username)) {
+                        feed.add(post);
+                    }
+                }
+            }
+        }
     }
 }

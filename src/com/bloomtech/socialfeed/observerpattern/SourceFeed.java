@@ -20,8 +20,8 @@ public class SourceFeed implements Source {
         this.observers = new ArrayList<>();
     }
 
-    public void getAllPosts() {
-        postRepository.getAllPosts();
+    public List<Post> getAllPosts() {
+       return postRepository.getAllPosts();
     }
 
     public Post addPost(User user, String body) {

@@ -16,32 +16,30 @@ import java.util.stream.Collectors;
 
 public class PostRepository {
     private static final String POST_DATA_PATH = "src/resources/PostData.json";
-    private OUserFeed oUserFeed;
 
     public PostRepository() {
     }
 
     public List<Post> getAllPosts() {
-        //TODO: read all posts from the PostData.json file
         List<Post> allPosts = new ArrayList<>();
+
         Gson gson = new GsonBuilder()
+                .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
                 .create();
 
         try {
             BufferedReader bufferedReader = new BufferedReader(new FileReader(POST_DATA_PATH));
             allPosts = gson.fromJson(bufferedReader, new TypeToken<List<Post>>(){}.getType());
 
-            bufferedReader.close();
-
         } catch (IOException e) {
             e.getStackTrace();
         }
 
-        if (allPosts == null) {
-            return new ArrayList<>();
+        if (allPosts != null) {
+            return allPosts;
         }
 
-        return allPosts;
+        return new ArrayList<>();
     }
 
     public List<Post> findByUsername(String username) {
@@ -73,3 +71,8 @@ public class PostRepository {
         return allPosts;
     }
 }
+
+
+
+
+
